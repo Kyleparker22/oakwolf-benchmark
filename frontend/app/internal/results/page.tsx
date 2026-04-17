@@ -644,7 +644,7 @@ function InternalResultsContent() {
     return <main style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#FAF9F6' }}><p style={{ color:'#6B6977' }}>Loading your results...</p></main>;
   }
 
-  const clientName = results.assessment.client_name || 'Internal Report';
+  const clientName = (results.assessment as any).client_name || 'Internal Report';
   const score = results.assessment.overall_score_100;
   const level = results.assessment.maturity_level;
   const c = col(score);
