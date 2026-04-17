@@ -1,8 +1,9 @@
 import requests
 import json
-
 import os
+
 SLACK_WEBHOOK = os.getenv("SLACK_WEBHOOK_URL", "")
+
 
 def notify_new_lead(lead: dict, assessment: dict):
     """Send a Slack notification when a new lead submits their info."""
@@ -46,12 +47,17 @@ def notify_new_lead(lead: dict, assessment: dict):
             },
             {
                 "type": "section",
-                "text": {"type": "mrkdwn", "text": f"📧 <mailto:{email}|Reply to {name}>  |  🔗 <https://oakwolf-benchmark.vercel.app/internal/login|View in Internal Portal>"}
+                "text": {"type": "mrkdwn", "text": f"📧 <mailto:{email}|Reply to {name}>  |  🔗 <https://benchmark.oakwolfgroup.com/internal/login|View in Internal Portal>"}
             }
         ]
     }
 
+    if not SLACK_WEBHOOK:
+        return  # No webhook configured, skip silently
+
     try:
-        requests.post(SLACK_WEBHOOK, json=message, timeout=5)
-    except Exception:
-        pass  # Never let Slack errors break the lead submission
+        response = requests.post(SLACK_WEBHOOK, json=message, timeout=5)
+        if response.status_code != 200:
+            print(f"[slack_notify] Webhook returned {response.status_code}: {response.text}")
+    except Exception as e:
+        print(f"[slack_notify] Failed to send: {e}")  # Never let Slack errors break the lead submission
