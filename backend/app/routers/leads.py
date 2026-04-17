@@ -4,6 +4,7 @@ Leads router — captures prospect contact info before unlocking external result
 
 from fastapi import APIRouter, HTTPException
 from app.database import get_db
+from slack_notify import notify_new_lead
 from app.models.schemas import SubmitLeadIn, LeadOut
 
 router = APIRouter(prefix="/assessments", tags=["Leads"])
