@@ -1,0 +1,10 @@
+{
+  "Provisioning":   0.20,
+  "RBAC":           0.18,
+  "IAM":            0.18,
+  "Authentication": 0.12,
+  "Governance":     0.12,
+  "Audit":          0.08,
+  "Training":       0.07,
+  "Operational":    0.05
+}

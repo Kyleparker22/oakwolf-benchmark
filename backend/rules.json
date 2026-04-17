@@ -1,0 +1,471 @@
+[
+  {
+    "rule_id": "R001",
+    "name": "Severe deprovisioning risk",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q3", "operator": "equals", "value": "3 days / unknown"},
+      {"type": "answer", "question_id": "Q4", "operator": "equals", "value": "Frequently"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Lifecycle deprovisioning gap",
+        "severity": "high",
+        "explanation": "Terminated users take more than 3 days to be removed from Epic, and disabled AD accounts frequently remain active in Epic.",
+        "business_impact": "Terminated or disabled users may retain active access longer than expected, increasing access risk and audit exposure.",
+        "visibility_scope": "both"
+      },
+      "domain_modifier": {"domain": "Provisioning", "points_delta": -0.5}
+    }
+  },
+  {
+    "rule_id": "R002",
+    "name": "Low automation maturity",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q1", "operator": "equals", "value": "0–25%"},
+      {"type": "answer", "question_id": "Q2", "operator": "equals", "value": "Fully manual"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Provisioning is almost entirely manual",
+        "severity": "high",
+        "explanation": "Less than 25% of users are provisioned through IAM and the primary method is fully manual.",
+        "business_impact": "Manual provisioning increases error rates, slows onboarding, and creates inconsistent access patterns across the organization.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R003",
+    "name": "Automation incomplete at termination stage",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q1", "operator": "in", "value": ["50–75%", "75–100%"]},
+      {"type": "answer", "question_id": "Q3", "operator": "in", "value": ["1–3 days", "3 days / unknown"]}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Provisioning automation does not extend to terminations",
+        "severity": "medium",
+        "explanation": "IAM automation covers provisioning but termination deprovisioning lags, creating a gap in the lifecycle.",
+        "business_impact": "Incomplete lifecycle automation leaves a window of unnecessary access after employment ends.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R004",
+    "name": "Excessive role/template sprawl",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q5", "operator": "equals", "value": "7+"},
+      {"type": "answer", "question_id": "Q8", "operator": "equals", "value": "Significant"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Excessive role and template sprawl",
+        "severity": "high",
+        "explanation": "Users average 7 or more templates and there is significant duplication or overlap across roles.",
+        "business_impact": "Role sprawl makes access reviews unreliable, increases the attack surface, and complicates any standardization effort.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R005",
+    "name": "Exception-driven access model",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q6", "operator": "equals", "value": "Mostly (>60%)"},
+      {"type": "answer", "question_id": "Q7", "operator": "equals", "value": "Highly inconsistent"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Exception-driven access model",
+        "severity": "high",
+        "explanation": "More than 60% of access is granted via exceptions and role structure is highly inconsistent.",
+        "business_impact": "An exception-driven model makes access reviews nearly impossible and erodes the value of any RBAC investment.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R006",
+    "name": "RBAC standardization opportunity",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q5", "operator": "equals", "value": "4–6"},
+      {"type": "answer", "question_id": "Q6", "operator": "equals", "value": "Frequently (30–60%)"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "RBAC standardization opportunity",
+        "severity": "medium",
+        "explanation": "Users average 4–6 templates and a significant portion of access is exception-based.",
+        "business_impact": "Standardizing roles would reduce exception volume and improve the reliability of access reviews.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R007",
+    "name": "IAM coverage does not translate to lifecycle automation",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q9", "operator": "equals", "value": "75–100%"},
+      {"type": "answer", "question_id": "Q10", "operator": "equals", "value": "Manual"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "IAM coverage is not translating to lifecycle automation",
+        "severity": "medium",
+        "explanation": "Most users are managed through IAM but lifecycle events (hire/transfer/terminate) are still handled manually.",
+        "business_impact": "IAM investment is not delivering its core value if lifecycle automation is not enabled.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R008",
+    "name": "Provider onboarding manual dependency",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q9", "operator": "in", "value": ["50–75%", "75–100%"]},
+      {"type": "answer", "question_id": "Q11", "operator": "in", "value": ["Mostly manual", "Fully manual"]}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Provider onboarding remains a major manual dependency",
+        "severity": "high",
+        "explanation": "Despite broad IAM coverage, provider onboarding is largely manual.",
+        "business_impact": "Manual provider onboarding is a common bottleneck that delays access for clinical staff and increases administrative burden.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R009",
+    "name": "IAM role enforcement inconsistency",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q12", "operator": "equals", "value": "Rarely"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "IAM role enforcement is inconsistent",
+        "severity": "high",
+        "explanation": "IAM rarely enforces role-based provisioning consistently across the user population.",
+        "business_impact": "Inconsistent enforcement undermines the reliability of access controls and creates gaps that accumulate over time.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R010",
+    "name": "SSO and native auth posture inconsistency",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q13", "operator": "equals", "value": "75–100%"},
+      {"type": "answer", "question_id": "Q14", "operator": "equals", "value": "Many"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "SSO adoption and native auth posture appear inconsistent",
+        "severity": "medium",
+        "explanation": "High SSO adoption is reported alongside many users still using native Epic authentication.",
+        "business_impact": "Native auth bypasses centralized identity controls and may indicate SSO enforcement gaps.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R011",
+    "name": "MFA gap",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q15", "operator": "equals", "value": "Not enforced"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "MFA is not enforced for Epic access",
+        "severity": "high",
+        "explanation": "Multi-factor authentication is not enforced for Epic access.",
+        "business_impact": "Without MFA, compromised credentials provide unrestricted access to the EHR environment.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R012",
+    "name": "Elevated authentication risk",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q14", "operator": "in", "value": ["Some", "Many"]},
+      {"type": "answer", "question_id": "Q15", "operator": "in", "value": ["Limited use", "Not enforced"]}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Elevated authentication risk",
+        "severity": "high",
+        "explanation": "A meaningful portion of users are authenticating natively through Epic while MFA enforcement is limited or absent.",
+        "business_impact": "This combination represents elevated credential risk across a significant portion of the user base.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R013",
+    "name": "Access before training",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q16", "operator": "in", "value": ["Sometimes", "Rarely"]},
+      {"type": "answer", "question_id": "Q18", "operator": "in", "value": ["Some", "Frequent"]}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Access is being granted before training completion",
+        "severity": "high",
+        "explanation": "Users are receiving Epic access before completing required training, and untrained users with active access are not rare.",
+        "business_impact": "Untrained users with active access increase both compliance risk and the likelihood of improper data access.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R014",
+    "name": "ATAT alignment risk",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q17", "operator": "equals", "value": "Poorly aligned"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Training is poorly aligned to job roles",
+        "severity": "medium",
+        "explanation": "Training assignments do not reflect the actual access and responsibilities of each role.",
+        "business_impact": "Misaligned training means compliance requirements may not be met and user competency cannot be assured.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R015",
+    "name": "Insufficient access review cadence",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q19", "operator": "equals", "value": "Rarely / Never"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Access review cadence is insufficient",
+        "severity": "high",
+        "explanation": "Access reviews are conducted rarely or never.",
+        "business_impact": "Without regular access reviews, accumulation of unnecessary access goes undetected, increasing both risk and audit exposure.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R016",
+    "name": "Limited audit visibility",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q20", "operator": "equals", "value": "None"},
+      {"type": "answer", "question_id": "Q21", "operator": "equals", "value": "Minimal"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Audit and monitoring visibility is minimal",
+        "severity": "high",
+        "explanation": "No monitoring for anomalous access and minimal audit logging are both present.",
+        "business_impact": "The organization cannot detect inappropriate access or respond to security incidents effectively.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R017",
+    "name": "Governance foundation is weak",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q22", "operator": "equals", "value": "No clear ownership"},
+      {"type": "answer", "question_id": "Q23", "operator": "equals", "value": "None"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Governance foundation is weak",
+        "severity": "high",
+        "explanation": "There is no clear ownership of Epic Security/IAM and no formal access governance structure.",
+        "business_impact": "Without governance, corrective actions are unlikely to be prioritized or sustained over time.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R018",
+    "name": "Unmanaged access change workflow",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q24", "operator": "equals", "value": "No process"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "No process for managing access changes",
+        "severity": "high",
+        "explanation": "Access changes are handled without any defined process.",
+        "business_impact": "Uncontrolled access changes create audit trail gaps and make it impossible to enforce least-privilege principles.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R019",
+    "name": "HR/IAM/Epic process misalignment",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q25", "operator": "equals", "value": "Highly disconnected"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "HR, IAM, and Epic workflows are highly disconnected",
+        "severity": "high",
+        "explanation": "HR, IAM, and Epic operate in silos with no meaningful workflow alignment.",
+        "business_impact": "Disconnected workflows are the root cause of most lifecycle gaps — provisioning delays, termination lags, and access accumulation.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R020",
+    "name": "Team stuck in reactive mode",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q26", "operator": "equals", "value": "Mostly reactive (firefighting)"},
+      {"type": "answer", "question_id": "Q27", "operator": "equals", "value": "Rarely"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Team is operating in reactive support mode",
+        "severity": "medium",
+        "explanation": "The team is mostly reactive and rarely runs optimization initiatives.",
+        "business_impact": "A team without capacity for proactive work cannot sustain improvements or respond to growing organizational complexity.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R021",
+    "name": "Operational maturity is reactive",
+    "pass": "single",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "answer", "question_id": "Q28", "operator": "equals", "value": "Firefighting"}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Operational maturity is at the firefighting stage",
+        "severity": "medium",
+        "explanation": "The team describes its operational maturity as firefighting.",
+        "business_impact": "Teams in firefighting mode cannot prioritize strategic security improvements and are at risk of falling further behind.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R022",
+    "name": "Maturity constraints are structural",
+    "pass": "second",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "domain_score", "domain": "Governance", "operator": "lt", "value": 5},
+      {"type": "domain_score", "domain": "Provisioning", "operator": "lt", "value": 5}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Maturity constraints appear structural, not isolated",
+        "severity": "high",
+        "explanation": "Both Governance and Provisioning scores are below 5, indicating that the gaps are not isolated to one area.",
+        "business_impact": "Structural gaps require coordinated improvement across people, process, and technology — point solutions alone will not close the maturity gap.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R023",
+    "name": "Tooling ahead of governance",
+    "pass": "second",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "domain_score", "domain": "IAM", "operator": "gte", "value": 7},
+      {"type": "domain_score", "domain": "Governance", "operator": "lt", "value": 5}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "IAM tooling appears ahead of governance maturity",
+        "severity": "medium",
+        "explanation": "IAM scores are strong but governance is underdeveloped relative to the tooling investment.",
+        "business_impact": "Without governance to direct it, IAM tooling delivers less value and may create a false sense of security.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R024",
+    "name": "Controls stronger than monitoring",
+    "pass": "second",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "domain_score", "domain": "Authentication", "operator": "gte", "value": 7},
+      {"type": "domain_score", "domain": "Audit", "operator": "lt", "value": 5}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Authentication controls are stronger than monitoring discipline",
+        "severity": "medium",
+        "explanation": "Authentication posture is mature but audit and monitoring capabilities lag significantly.",
+        "business_impact": "Strong controls without monitoring means the organization cannot detect when those controls are bypassed or fail.",
+        "visibility_scope": "both"
+      }
+    }
+  },
+  {
+    "rule_id": "R025",
+    "name": "Team lacks capacity for role hygiene",
+    "pass": "second",
+    "condition_logic": "AND",
+    "conditions": [
+      {"type": "domain_score", "domain": "Operational", "operator": "lt", "value": 5},
+      {"type": "domain_score", "domain": "RBAC", "operator": "lt", "value": 5}
+    ],
+    "actions": {
+      "add_finding": {
+        "title": "Team likely lacks capacity to sustain role hygiene",
+        "severity": "medium",
+        "explanation": "Both Operational and RBAC scores are below 5, suggesting the team does not have the bandwidth to maintain role structure quality.",
+        "business_impact": "Without operational capacity, RBAC improvements will degrade over time even if initial cleanup work is done.",
+        "visibility_scope": "both"
+      }
+    }
+  }
+]
