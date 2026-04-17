@@ -1,7 +1,8 @@
 import requests
 import json
 
-SLACK_WEBHOOK = "https://hooks.slack.com/services/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"
+import os
+SLACK_WEBHOOK = os.getenv("SLACK_WEBHOOK_URL", "")
 
 def notify_new_lead(lead: dict, assessment: dict):
     """Send a Slack notification when a new lead submits their info."""
